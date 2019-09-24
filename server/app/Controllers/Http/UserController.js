@@ -12,7 +12,7 @@ class UserController {
 
   async login({request,auth}){
     const {username,password} = request.all();
-    const token = await auth.attempt({username,password});
+    const token = await auth.attempt(username,password);
     return token;
 
   }
