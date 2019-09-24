@@ -85,14 +85,15 @@ module.exports = {
   |
   */
  jwtmongo: {
-  serializer: 'LucidMongo',
-  scheme: 'api',
-  model: 'App/Models/User',
-  token: 'App/Models/Token',
-  uid: 'username',
-  password: 'password',
-  expiry: '30d',
-},
+    serializer: 'LucidMongo',
+    model: 'App/Models/User',
+    scheme: 'jwt',
+    uid: 'username',
+    password: 'password',
+    options: {
+      secret: Env.get('APP_KEY')
+    }
+  },
 
   /*
   |--------------------------------------------------------------------------
