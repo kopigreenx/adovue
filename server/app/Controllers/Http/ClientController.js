@@ -34,9 +34,6 @@ class ClientController {
    * @param {View} ctx.view
    */
   async create ({ request, response, auth }) {
-    const user = await auth.getUser();
-    const data = request.all();
-    Cli.fill(data);
 
   }
 
@@ -48,7 +45,14 @@ class ClientController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store ({ request, response,auth }) {
+    const user = await auth.getUser();
+    const data = request.all();
+    const callbackData = await user.clients().create(data);
+    return response.status(200).json({
+      status : "success",
+      data : callbackData
+    });
   }
 
   /**
@@ -60,7 +64,24 @@ class ClientController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
+  async show ({ params, response, auth }) {
+    const user = await auth.getUser();
+    const {client_id} = params;
+    const client = await Cli.find(client_id)
+    //Check Resource before Delete
+    if(!client){
+      return response.status(404).json({
+        messages:'Data Not Found'
+      })
+    }
+    //Check user_id before delete
+    console.log(user._id,client.user_id);
+    if(user._id === client.user_id){
+      return response.status(403).json({
+        messages:'You Don\'t have permission to this data'
+      })
+    }
+    return client;
   }
 
   /**
@@ -72,7 +93,24 @@ class ClientController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async edit ({ params, request, response, view }) {
+  async edit ({ params, auth , response }) {
+    const user = await auth.getUser();
+    const {client_id} = params;
+    const client = await Cli.find(client_id);
+    //Check Resource before Delete
+    if(!client){
+      return response.status(404).json({
+        messages:'Data Not Found'
+      })
+    }
+    //Check user_id before delete
+    console.log(user._id,client.user_id);
+    if(user._id!==client.user_id){
+      return response.status(500).json({
+        messages:'You Don\'t have permission to this data'
+      })
+    }
+    return client;
   }
 
   /**
@@ -83,7 +121,9 @@ class ClientController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
+  async update ({ params, request, response , auth }) {
+    const user = await auth.getUser();
+
   }
 
   /**
@@ -94,7 +134,25 @@ class ClientController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy ({ params, response , auth }) {
+    const user = await auth.getUser();
+    const {client_id} = params;
+
+    const client = await Cli.find(client_id);
+    //Check Resource before Delete
+    if(!client){
+      return response.status(404).json({
+        messages:'Data Not Found'
+      })
+    }
+    //Check user_id before delete
+    if(user._id!==client.user_id){
+      return response.status(403).json({
+        messages:'You Don\'t have permission to this data'
+      })
+    }
+    await client.delete()
+    return client;
   }
 }
 

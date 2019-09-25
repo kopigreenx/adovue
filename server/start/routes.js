@@ -22,6 +22,10 @@ Route.group(()=>{
   Route.post('auth/login','UserController.login');
 
   Route.get('clients','ClientController.index').middleware('auth');
-  Route.post('clients','ClientController.create').middleware('auth');
+  Route.post('clients','ClientController.store').middleware('auth');
 
+  Route.get('clients/:client_id/detail','ClientController.show').middleware('auth');
+  Route.get('clients/:client_id','ClientController.edit').middleware('auth');
+  Route.put('clients/:client_id','ClientController.update').middleware('auth');
+  Route.delete('clients/:client_id','ClientController.destroy').middleware('auth');
 }).prefix('api');
