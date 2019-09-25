@@ -75,25 +75,6 @@ module.exports = {
       secret: Env.get('APP_KEY')
     }
   },
-  /*
-  |--------------------------------------------------------------------------
-  | Jwt Mongo
-  |--------------------------------------------------------------------------
-  |
-  | The jwt authenticator works by passing a jwt token on each HTTP request
-  | via HTTP `Authorization` header.
-  |
-  */
- jwtmongo: {
-    serializer: 'LucidMongo',
-    model: 'App/Models/User',
-    scheme: 'jwt',
-    uid: 'username',
-    password: 'password',
-    options: {
-      secret: Env.get('APP_KEY')
-    }
-  },
 
   /*
   |--------------------------------------------------------------------------
