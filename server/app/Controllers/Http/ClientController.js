@@ -99,7 +99,7 @@ class ClientController {
     const user = await auth.getUser();
     const {client_id} = params;
     const client = await Cli.find(client_id);
-    //AuthService.CheckAuth(client,user);
+    AuthService.CheckAuth(client,user);
     return {
       a:user._id,
       b:client.user_id,
@@ -121,6 +121,8 @@ class ClientController {
     const data = request.all();
 
     const client = await Cli.find(client_id);
+    client.merge(data);
+    await client.save();
     return client;
 
 
@@ -139,18 +141,7 @@ class ClientController {
     const {client_id} = params;
 
     const client = await Cli.find(client_id);
-    //Check Resource before Delete
-    if(!client){
-      return response.status(404).json({
-        messages:'Data Not Found'
-      })
-    }
-    //Check user_id before delete
-    if(user._id!==client.user_id){
-      return response.status(403).json({
-        messages:'You Don\'t have permission to this data'
-      })
-    }
+    AuthService.CheckAuth(client,user);
     await client.delete()
     return client;
   }
