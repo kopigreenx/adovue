@@ -8,6 +8,8 @@
  * Resourceful controller for interacting with clients
  */
 const Cli = use('App/Models/Client');
+const { validate } = use('Validator');
+const AuthService = use('App/Services/AuthService');
 class ClientController {
   /**
    * Show a list of all clients.
@@ -48,6 +50,18 @@ class ClientController {
   async store ({ request, response,auth }) {
     const user = await auth.getUser();
     const data = request.all();
+
+    const rules = {
+      first_name: 'required',
+      last_name: 'required',
+      address: 'required',
+      email: 'required',
+      contact: 'required',
+    };
+    const validation = await validate(data, rules);
+    if(validation.fails()){
+      return validation.messages()
+    }
     const callbackData = await user.clients().create(data);
     return response.status(200).json({
       status : "success",
@@ -68,19 +82,7 @@ class ClientController {
     const user = await auth.getUser();
     const {client_id} = params;
     const client = await Cli.find(client_id)
-    //Check Resource before Delete
-    if(!client){
-      return response.status(404).json({
-        messages:'Data Not Found'
-      })
-    }
-    //Check user_id before delete
-    console.log(user._id,client.user_id);
-    if(user._id === client.user_id){
-      return response.status(403).json({
-        messages:'You Don\'t have permission to this data'
-      })
-    }
+
     return client;
   }
 
@@ -97,20 +99,12 @@ class ClientController {
     const user = await auth.getUser();
     const {client_id} = params;
     const client = await Cli.find(client_id);
-    //Check Resource before Delete
-    if(!client){
-      return response.status(404).json({
-        messages:'Data Not Found'
-      })
+    //AuthService.CheckAuth(client,user);
+    return {
+      a:user._id,
+      b:client.user_id,
+      data:client
     }
-    //Check user_id before delete
-    console.log(user._id,client.user_id);
-    if(user._id!==client.user_id){
-      return response.status(500).json({
-        messages:'You Don\'t have permission to this data'
-      })
-    }
-    return client;
   }
 
   /**
@@ -123,6 +117,12 @@ class ClientController {
    */
   async update ({ params, request, response , auth }) {
     const user = await auth.getUser();
+    const {client_id} = params;
+    const data = request.all();
+
+    const client = await Cli.find(client_id);
+    return client;
+
 
   }
 
