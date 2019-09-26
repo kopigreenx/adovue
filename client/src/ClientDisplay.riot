@@ -1,0 +1,36 @@
+<ClientDisplay>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody each={ client in state.clients }>
+    <tr>
+      <th scope="row">client.first_name</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+  </tbody>
+</table>
+<script>
+ const axios = require('axios');
+ export default {
+      state : {
+        clients:[]
+      },
+      onBeforeMount(props, state) {
+          
+        
+      },
+      onMounted(props, state) {
+        // right after the component is mounted on the page
+        console.log(state)
+      },
+    }
+</script>
+</ClientDisplay>

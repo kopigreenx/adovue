@@ -21,9 +21,12 @@ class ClientController {
    * @param {View} ctx.view
    */
   async index ({ auth }) {
-    const user = await auth.getUser();
-    console.log(user._id);
-    return await user.clients().fetch();
+    //const user = await auth.getUser();
+    //console.log(user._id);
+
+    const client = await Cli.all()
+
+    return client;
   }
 
   /**
@@ -48,7 +51,7 @@ class ClientController {
    * @param {Response} ctx.response
    */
   async store ({ request, response,auth }) {
-    const user = await auth.getUser();
+    //const user = await auth.getUser();
     const data = request.all();
 
     const rules = {
@@ -79,7 +82,7 @@ class ClientController {
    * @param {View} ctx.view
    */
   async show ({ params, response, auth }) {
-    const user = await auth.getUser();
+    //const user = await auth.getUser();
     const {client_id} = params;
     const client = await Cli.find(client_id)
 
@@ -96,7 +99,7 @@ class ClientController {
    * @param {View} ctx.view
    */
   async edit ({ params, auth , response }) {
-    const user = await auth.getUser();
+    //const user = await auth.getUser();
     const {client_id} = params;
     const client = await Cli.find(client_id);
     AuthService.CheckAuth(client,user);
@@ -116,7 +119,7 @@ class ClientController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response , auth }) {
-    const user = await auth.getUser();
+    //const user = await auth.getUser();
     const {client_id} = params;
     const data = request.all();
 
@@ -137,7 +140,7 @@ class ClientController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, response , auth }) {
-    const user = await auth.getUser();
+    //const user = await auth.getUser();
     const {client_id} = params;
 
     const client = await Cli.find(client_id);
