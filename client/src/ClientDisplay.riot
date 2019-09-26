@@ -8,7 +8,7 @@
       <th scope="col">Handle</th>
     </tr>
   </thead>
-  <tbody each={ client in state.clients }>
+  <tbody each={ client in data }>
     <tr>
       <th scope="row">client.first_name</th>
       <td>Mark</td>
@@ -20,16 +20,12 @@
 <script>
  const axios = require('axios');
  export default {
-      state : {
-        clients:[]
-      },
-      onBeforeMount(props, state) {
-          
+     onBeforeMount(props, state) {
+         
         
       },
       onMounted(props, state) {
         // right after the component is mounted on the page
-        console.log(state)
       },
     }
 </script>

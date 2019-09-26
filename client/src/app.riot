@@ -42,9 +42,9 @@
 </div>
 
   <script>
-    const axios = require('axios');
     import {register, mount} from 'riot'
     import ClientDisplay from './ClientDisplay.riot'
+    const axios = require('axios');
 
     register('client-display', ClientDisplay)
 
@@ -53,8 +53,8 @@
     axios.get('http://localhost:3333/api/clients')
             .then(function (response) {
                 // handle success
-               
-        mount('client-display',{data:response.data})
+                console.log(response.data)
+              mount('client-display',response.data, 'client-display')
             })
             .catch(function (error) {
                 // handle error
@@ -63,6 +63,7 @@
             .finally(function () {
                 // always executed
             });
+    
 
     export default {
       onBeforeMount(props, state) {
