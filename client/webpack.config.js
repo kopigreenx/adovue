@@ -1,5 +1,6 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ProvidePlugin = require('html-webpack-plugin');
+var webpack = require('webpack')
 var path = require('path');
 
 module.exports = {
@@ -38,7 +39,7 @@ module.exports = {
       template: "./src/index.html",
       filename: "./index.html"
     }),
-    new ProvidePlugin({
+    new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       Popper: ['popper.js', 'default'],

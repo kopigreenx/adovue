@@ -35,7 +35,7 @@
     import modalEdit from './modalEdit.riot'
     import modalDelete from './modalDelete.riot'
     const axios = require('axios');
-
+    
     register('modal-edit', modalEdit)
     register('modal-delete', modalDelete)
 
@@ -60,9 +60,11 @@
         console.log(arrDat);
       },
       actDelete(id){
-        mount('modal-delete',{id:id})
+        console.log('act delete from client-display => '+id)
+        mount('modal-delete',{data:id})
+        
       }
-      
+
     }
 </script>
 </ClientDisplay>
