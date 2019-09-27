@@ -22,14 +22,12 @@
     </div>
   </div>
 </div>
-<modal-edit message={childMessage} ref={onChildRefEdit}></modal-edit>
-<modal-delete ref={onChildRefDelete}></modal-delete>
+<modal-edit></modal-edit>
+<modal-delete></modal-delete>
 
   <script>
     import {register, mount} from 'riot'
-
     import ClientDisplay from './ClientDisplay.riot'
-
     const axios = require('axios');
 
     register('client-display', ClientDisplay)
@@ -39,38 +37,15 @@
     axios.get('http://localhost:3333/api/clients')
             .then(function (response) {
                 // handle success
-            console.log(response);
-            if(response.status==200){
-              mount('client-display',{'data':response.data})
-            }
-            
-              //console.log(response.data)
+                mount('client-display',{'data':response.data})
             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
-            })
-            .finally(function () {
-                // always executed
             });
     export default {
-      
-      actEdit(id,first_name,last_name,email,address,contact){
-        const arrDat ={
-          _id:id,
-          first_name:first_name,
-          last_name:last_name,
-          email:email,
-          address:address,
-          contact:contact
-        };
-        console.log(arrDat);
-      },
-      onChildRef(child) {
-        this.child = child
-      },
-      onMounted() {
-        console.log(this.refs)
+      onMounted(props, state) {
+
       },
       onBeforeMount(props, state) {
         

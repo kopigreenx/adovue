@@ -46,12 +46,15 @@
 
             },
             onMounted(props, state) {
-                document.getElementById('_id').placeholder = props.data._id;
-                document.getElementById('first_name').placeholder = props.data.first_name;
-                document.getElementById('last_name').placeholder = props.data.last_name;
-                document.getElementById('email').placeholder = props.data.email;
-                document.getElementById('address').placeholder = props.data.address;
-                document.getElementById('contact').placeholder = props.data.contact;
+                console.log('modal edit loaded');
+                if (props.data) {
+                    document.getElementById('_id').placeholder = props.data._id;
+                    document.getElementById('first_name').placeholder = props.data.first_name;
+                    document.getElementById('last_name').placeholder = props.data.last_name;
+                    document.getElementById('email').placeholder = props.data.email;
+                    document.getElementById('address').placeholder = props.data.address;
+                    document.getElementById('contact').placeholder = props.data.contact;
+                }
             }
 
         }

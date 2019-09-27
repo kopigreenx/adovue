@@ -34,13 +34,13 @@
     import {register, mount} from 'riot'
     import modalEdit from './modalEdit.riot'
     import modalDelete from './modalDelete.riot'
-
     const axios = require('axios');
 
     register('modal-edit', modalEdit)
     register('modal-delete', modalDelete)
 
     export default {
+
       onBeforeMount(props, state) {
       },
       onMounted(props, state) {
@@ -48,12 +48,12 @@
       },
       actEdit(id,first_name,last_name,email,address,contact){
         const arrDat ={
-          _id:id,
-          first_name:first_name,
-          last_name:last_name,
-          email:email,
-          address:address,
-          contact:contact
+          _id         : id,
+          first_name  : first_name,
+          last_name   : last_name,
+          email       : email,
+          address     : address,
+          contact     : contact
         };
         
         mount('modal-edit',{data:arrDat})
@@ -62,6 +62,7 @@
       actDelete(id){
         mount('modal-delete',{id:id})
       }
+      
     }
 </script>
 </ClientDisplay>
