@@ -8,7 +8,9 @@
  * Resourceful controller for interacting with clients
  */
 const Cli = use('App/Models/Client');
-const { validate } = use('Validator');
+const {
+  validate
+} = use('Validator');
 const AuthService = use('App/Services/AuthService');
 class ClientController {
   /**
@@ -20,26 +22,11 @@ class ClientController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ auth }) {
-    //const user = await auth.getUser();
-    //console.log(user._id);
-
-    const client = await Cli.all()
-
-    return client;
-  }
-
-  /**
-   * Render a form to be used for creating a new client.
-   * GET clients/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, auth }) {
-
+  async index({
+    auth
+  }) {
+    const clientData = await Cli.all()
+    return clientData;
   }
 
   /**
@@ -50,26 +37,24 @@ class ClientController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response,auth }) {
-    //const user = await auth.getUser();
+  async store({
+    request
+  }) {
     const data = request.all();
-
     const rules = {
-      first_name: 'required',
       last_name: 'required',
       address: 'required',
       email: 'required',
       contact: 'required',
     };
     const validation = await validate(data, rules);
-    if(validation.fails()){
+    if (validation.fails()) {
       return validation.messages()
     }
-    const callbackData = await user.clients().create(data);
-    return response.status(200).json({
-      status : "success",
-      data : callbackData
-    });
+    const client = new Cli();
+    client.fill(data);
+    await client.save();
+    return client;
   }
 
   /**
@@ -81,12 +66,15 @@ class ClientController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, response, auth }) {
-    //const user = await auth.getUser();
-    const {client_id} = params;
-    const client = await Cli.find(client_id)
-
-    return client;
+  async show({
+    params
+  }) {
+    const {
+      client_id
+    } = params;
+    const client = new Cli();
+    const clientData = await client.find(client_id)
+    return clientData;
   }
 
   /**
@@ -98,16 +86,14 @@ class ClientController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async edit ({ params, auth , response }) {
-    //const user = await auth.getUser();
-    const {client_id} = params;
-    const client = await Cli.find(client_id);
-    AuthService.CheckAuth(client,user);
-    return {
-      a:user._id,
-      b:client.user_id,
-      data:client
-    }
+  async edit({
+    params
+  }) {
+    const {
+      client_id
+    } = params;
+    const clientData = await Cli.find(client_id);
+    return clientData;
   }
 
   /**
@@ -118,11 +104,14 @@ class ClientController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response , auth }) {
-    //const user = await auth.getUser();
-    const {client_id} = params;
+  async update({
+    params,
+    request
+  }) {
+    const {
+      client_id
+    } = params;
     const data = request.all();
-
     const client = await Cli.find(client_id);
     client.merge(data);
     await client.save();
@@ -139,12 +128,14 @@ class ClientController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, response , auth }) {
-    //const user = await auth.getUser();
-    const {client_id} = params;
+  async destroy({
+    params
+  }) {
+    const {
+      client_id
+    } = params;
 
     const client = await Cli.find(client_id);
-    AuthService.CheckAuth(client,user);
     await client.delete()
     return client;
   }
