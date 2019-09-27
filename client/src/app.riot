@@ -22,33 +22,36 @@
     </div>
   </div>
 </div>
-<modal-edit></modal-edit>
-<modal-delete></modal-delete>
 
   <script>
-    import {register, mount} from 'riot'
+    import {register,unregister, mount} from 'riot'
     import ClientDisplay from './ClientDisplay.riot'
     const axios = require('axios');
-
+    
     register('client-display', ClientDisplay)
     
     // find all the DOM nodes called `<ClientDisplay>` and
     // mount them with the component previously registered
-    axios.get('http://localhost:3333/api/clients')
+    function loadDataClient(){
+      console.log('data client')
+      axios.get('http://localhost:3333/api/clients')
             .then(function (response) {
                 // handle success
-                mount('client-display',{'data':response.data})
+                mount('client-display',{'data':response.data,callback:callbackReloadData})
             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
             });
+    }
+    function callbackReloadData(theTag){
+      console.log("callback action")
+      console.log(theTag)
+      //loadDataClient()
+    }
     export default {
       onMounted(props, state) {
-
-      },
-      onBeforeMount(props, state) {
-        
+        loadDataClient();
       }
     }
   </script>

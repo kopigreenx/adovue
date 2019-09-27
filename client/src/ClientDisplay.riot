@@ -1,16 +1,6 @@
 <ClientDisplay>
 <table class="table">
-    <thead>
-      <tr>
-        <td><input type="checkbox" class="checkall" /></td>
-        <th scope="col" align="center">First Name</th>
-        <th scope="col" align="center">Last Name</th>
-        <th scope="col" align="center">E-mail</th>
-        <th scope="col" align="center">Address</th>
-        <th scope="col" align="center">Contact</th>
-        <th scope="col" align="center" colspan=2>Action</th>
-      </tr>
-    </thead>
+   
     
     <tbody>
     <tr each={ client in props.data } first_name={ client.first_name}>
@@ -28,9 +18,9 @@
     </tbody>
 </table>
 
+<modal-edit></modal-edit>
+<modal-delete></modal-delete>
 <script>
-    console.log('client display loaded');
-
     import {register, mount} from 'riot'
     import modalEdit from './modalEdit.riot'
     import modalDelete from './modalDelete.riot'
@@ -41,11 +31,6 @@
 
     export default {
 
-      onBeforeMount(props, state) {
-      },
-      onMounted(props, state) {
-        // right after the component is mounted on the page
-      },
       actEdit(id,first_name,last_name,email,address,contact){
         const arrDat ={
           _id         : id,
@@ -55,14 +40,12 @@
           address     : address,
           contact     : contact
         };
-        
         mount('modal-edit',{data:arrDat})
-        console.log(arrDat);
       },
       actDelete(id){
         console.log('act delete from client-display => '+id)
         mount('modal-delete',{data:id})
-        
+        //this.props.callback(this);
       }
 
     }
