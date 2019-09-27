@@ -22,23 +22,18 @@
     </div>
   </div>
 </div>
-<modal-edit></modal-edit>
-<modal-delete></modal-delete>
+<modal-edit message={childMessage} ref={onChildRefEdit}></modal-edit>
+<modal-delete ref={onChildRefDelete}></modal-delete>
 
   <script>
     import {register, mount} from 'riot'
 
     import ClientDisplay from './ClientDisplay.riot'
-    import modalEdit from './modalEdit.riot'
-    import modalDelete from './modalDelete.riot'
 
     const axios = require('axios');
 
     register('client-display', ClientDisplay)
-    register('modal-edit', modalEdit)
-    register('modal-delete', modalDelete)
-    mount('modal-edit')
-    mount('modal-delete')
+    
     // find all the DOM nodes called `<ClientDisplay>` and
     // mount them with the component previously registered
     axios.get('http://localhost:3333/api/clients')
@@ -59,6 +54,24 @@
                 // always executed
             });
     export default {
+      
+      actEdit(id,first_name,last_name,email,address,contact){
+        const arrDat ={
+          _id:id,
+          first_name:first_name,
+          last_name:last_name,
+          email:email,
+          address:address,
+          contact:contact
+        };
+        console.log(arrDat);
+      },
+      onChildRef(child) {
+        this.child = child
+      },
+      onMounted() {
+        console.log(this.refs)
+      },
       onBeforeMount(props, state) {
         
       }
