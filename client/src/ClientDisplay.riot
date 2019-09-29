@@ -18,10 +18,8 @@
         <th scope="row">{client.email}</th>
         <th scope="row">{client.address}</th>
         <th scope="row">{client.contact}</th>
-        <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" onclick="{actEdit}" data-id="{client._id}" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span>Edit</button></p></td>
-        <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" onclick="{actDelete}" data-id="{client._id}" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-ice-lolly" aria-hidden="true"></span>Delete</button></p></td>
-
-
+        <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" onclick="{() => actEdit(client._id,client.first_name,client.last_name,client.email,client.address,client.contact)}" data-id="{client._id}" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span>Edit</button></p></td>
+        <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" onclick="{() => actDelete(client._id)}" data-id="{client._id}" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-ice-lolly" aria-hidden="true"></span>Delete</button></p></td>
       </tr>
       </tbody>
   </table>
