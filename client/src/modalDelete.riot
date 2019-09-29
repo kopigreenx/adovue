@@ -5,17 +5,17 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
                             class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                    <h4 class="modal-title" id="Heading">Delete Confirmation {props.data}</h4>
+                    <h4 class="modal-title" id="Heading">{id_client}Delete Confirmation </h4>
                 </div>
                 <div class="modal-body">
 
                     <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure
-                        you want to delete this Record? {message}</div>
+                        you want to delete this Record {state.id_client}?</div>
 
                 </div>
                 <div class="modal-footer ">
-                    <button type="button" onclick="{() => delete_client(message)}" data-id="{state.id}" class="btn btn-success"><span
-                            class="glyphicon glyphicon-ok-sign"></span> Yes{state}</button>
+                    <button type="button" onclick="{delete_client}" key="{state.id_client}" class="btn btn-success"><span
+                            class="glyphicon glyphicon-ok-sign"></span> Yes</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><span
                             class="glyphicon glyphicon-remove"></span> No</button>
                 </div>
@@ -27,18 +27,24 @@
 
     <script>
         export default {
-            
-            onMounted(props, state) {
-                console.log(props.data)
-                this.message = props.data
-                this.update()
-
+            onBeforeMount(props, state) {
+               //initial state
+               this.state={
+                    id_client: ''
+               }
             },
-            delete_client(id) {
+            onMounted(props, state) {
+                
+                console.log('on Mounted modal delete '+props.data_id)
+                this.update({ id_client: props.data_id })
+                
+            },
+            delete_client(e) {
+                this.props.callback
+                console.log(this.state)
                 $("#delete").modal('hide');
-                $("#delete").on('hidden.bs.modal', function () {
-                    //this.callback
-                    console.log(id)
+                $("#delete").on('hidden.bs.modal', function (ex) {
+                   
                 })
 
             }

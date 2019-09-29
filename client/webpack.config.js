@@ -1,14 +1,14 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ProvidePlugin = require('html-webpack-plugin');
 var webpack = require('webpack')
-var path = require('path');
 
 module.exports = {
+  context: __dirname,
+  devtool: 'inline',
   entry: './src/index.js',
   module: {
     rules: [{
         test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -42,7 +42,7 @@ module.exports = {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
-      Popper: ['popper.js', 'default'],
+      Popper: ['default'],
     })
   ]
 }

@@ -1,4 +1,6 @@
 <modal-edit>
+
+<form onsubmit={ submit }> 
     <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -9,25 +11,25 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <input class="form-control " type="text" name="_id" id="_id" placeholder="_id">
+                        <input class="form-control " type="text" name="_id" value="{state._id}" id="_id" placeholder="_id">
                     </div>
                     <div class="form-group">
-                        <input class="form-control " type="text" name="first_name" id="first_name"
+                        <input class="form-control " type="text" name="first_name" value="{state.first_name}" id="first_name"
                             placeholder="first_name">
                     </div>
                     <div class="form-group">
-                        <input class="form-control " type="text" name="last_name" id="last_name"
+                        <input class="form-control " type="text" name="last_name" value="{state.last_name}" id="last_name"
                             placeholder="first_name">
                     </div>
                     <div class="form-group">
-                        <textarea rows="2" class="form-control" name="address" id="address"
+                        <textarea rows="2" class="form-control" name="address" value="{state.address}" id="address"
                             placeholder="Address"></textarea>
                     </div>
                     <div class="form-group">
-                        <input class="form-control " type="text" name="email" id="email" placeholder="first_name">
+                        <input class="form-control " type="text" name="email" value="{state.email}" id="email" placeholder="first_name">
                     </div>
                     <div class="form-group">
-                        <input class="form-control " type="text" name="contact" id="contact" placeholder="first_name">
+                        <input class="form-control " type="text" name="contact" value="{state.contact}" id="contact" placeholder="first_name">
                     </div>
                 </div>
                 <div class="modal-footer ">
@@ -40,17 +42,35 @@
         <!-- /.modal-dialog -->
     </div>
 
+                    </form>
     <script>
         export default {
-            onMounted(props, state) {
-                if (props.data) {
-                    document.getElementById('_id').placeholder = props.data._id;
-                    document.getElementById('first_name').placeholder = props.data.first_name;
-                    document.getElementById('last_name').placeholder = props.data.last_name;
-                    document.getElementById('email').placeholder = props.data.email;
-                    document.getElementById('address').placeholder = props.data.address;
-                    document.getElementById('contact').placeholder = props.data.contact;
+            onBeforeMount(props, state) {
+                //Initial State
+                this.state={
+                    _id :'',
+                    first_name:'',
+                    last_name:'',
+                    email:'',
+                    address:'',
+                    contact:''
                 }
+            },
+            onMounted(props,state){
+                this.state={
+                    _id :props.arrDat._id,
+                    first_name:props.arrDat.first_name,
+                    last_name:props.arrDat.last_name,
+                    email:props.arrDat.email,
+                    address:props.arrDat.address,
+                    contact:props.arrDat.contact
+                }
+                this.update(this.state)
+                console.log(this.state)
+            },
+            submit(e){
+                e.preventDefault();
+                alert('save')
             }
 
         }

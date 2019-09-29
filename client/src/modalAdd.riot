@@ -1,0 +1,57 @@
+<modal-add>
+    
+<form onsubmit={ submit } name="form_add"> 
+    <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    <h4 class="modal-title custom_align" id="Heading">Edit Your Detail </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input class="form-control " type="text" name="_id" id="_id" placeholder="_id">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control " type="text" name="first_name" id="first_name"
+                            placeholder="first_name">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control " type="text" name="last_name" id="last_name"
+                            placeholder="first_name">
+                    </div>
+                    <div class="form-group">
+                        <textarea rows="2" class="form-control" name="address" id="address"
+                            placeholder="Address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control " type="text" name="email" id="email" placeholder="first_name">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control " type="text" name="contact" id="contact" placeholder="first_name">
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span
+                            class="glyphicon glyphicon-ok-sign"></span> Update</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+                    </form>
+    <script>
+        export default {
+           
+            submit(e){
+                console.log('save button')
+                e.preventDefault();
+                alert('save')
+            }
+
+        }
+    </script>
+</modal-add>
