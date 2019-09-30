@@ -1,1 +1,1 @@
-"# Full Stack Adonis + vuejs" 
+"# Full Stack Adonis + RiotJS" 
