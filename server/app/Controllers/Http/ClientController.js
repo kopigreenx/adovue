@@ -7,11 +7,8 @@
 /**
  * Resourceful controller for interacting with clients
  */
-const Cli = use('App/Models/Client');
-const {
-  validate
-} = use('Validator');
-const AuthService = use('App/Services/AuthService');
+const Client = use('App/Models/Client');
+const { validate } = use('Validator');
 class ClientController {
   /**
    * Show a list of all clients.
@@ -22,11 +19,9 @@ class ClientController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({
-    auth
-  }) {
-    const clientData = await Cli.all()
-    return clientData;
+  async index({response}) {
+    const clientData = await Client.all();
+    return response.json(clientData);
   }
 
   /**
@@ -37,9 +32,7 @@ class ClientController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({
-    request
-  }) {
+  async store({ request }) {
     const data = request.all();
     const rules = {
       last_name: 'required',
@@ -51,7 +44,7 @@ class ClientController {
     if (validation.fails()) {
       return validation.messages()
     }
-    const client = new Cli();
+    const client = new Client();
     client.fill(data);
     await client.save();
     return client;
@@ -66,36 +59,11 @@ class ClientController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({
-    params
-  }) {
-    const {
-      client_id
-    } = params;
-    const client = new Cli();
-    const clientData = await client.find(client_id)
+  async show({ params }) {
+    const {client_name} = params;
+    const clientData = await Client.where({$or: [{first_name:{'$regex': client_name}},{last_name:{'$regex': client_name}}] }).fetch();
     return clientData;
   }
-
-  /**
-   * Render a form to update an existing client.
-   * GET clients/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit({
-    params
-  }) {
-    const {
-      client_id
-    } = params;
-    const clientData = await Cli.find(client_id);
-    return clientData;
-  }
-
   /**
    * Update client details.
    * PUT or PATCH clients/:id
@@ -104,15 +72,10 @@ class ClientController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({
-    params,
-    request
-  }) {
-    const {
-      client_id
-    } = params;
+  async update({ params,request }) {
+    const { client_id } = params;
     const data = request.all();
-    const client = await Cli.find(client_id);
+    const client = await Client.find(client_id);
     client.merge(data);
     await client.save();
     return client;
@@ -128,13 +91,8 @@ class ClientController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy({
-    params
-  }) {
-    const {
-      client_id
-    } = params;
-
+  async destroy({ params }) {
+    const { client_id } = params;
     const client = await Cli.find(client_id);
     await client.delete()
     return client;

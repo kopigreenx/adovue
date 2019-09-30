@@ -19,8 +19,7 @@ const Route = use('Route');
 Route.group(() => {
   Route.get('clients', 'ClientController.index');
   Route.post('clients', 'ClientController.store');
-  Route.get('clients/:client_id/detail', 'ClientController.show');
-  Route.get('clients/:client_id', 'ClientController.edit');
+  Route.get('clients/:client_name', 'ClientController.show');
   Route.put('clients/:client_id', 'ClientController.update');
   Route.delete('clients/:client_id', 'ClientController.destroy');
 }).prefix('api');
