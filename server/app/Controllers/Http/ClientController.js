@@ -91,11 +91,14 @@ class ClientController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy({ params }) {
+  async destroy({ params,response }) {
     const { client_id } = params;
-    const client = await Cli.find(client_id);
+    const client = await Client.find(client_id);
     await client.delete()
-    return client;
+    return response.status(200).json({
+      "delete_status":"success",
+      "data"  :client
+    });
   }
 }
 
