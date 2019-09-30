@@ -18,13 +18,13 @@
 </div>
 <script>
 
-    import {register,unregister, mount, unmount} from 'riot'
+    import {mount, unmount} from 'riot'
+    import ClientDisplay from './ClientDisplay.riot'
     
-    import modalAdd from './modalAdd.riot'
-    import modalEdit from './modalEdit.riot'
-    import modalDelete from './modalDelete.riot'
-    register('modal-add', modalAdd)
-    register('modal-edit', modalEdit)
-    register('modal-delete', modalDelete)
+    export default {
+      components: {
+        ClientDisplay
+      }
+    }
 </script>
 </app>

@@ -1,55 +1,95 @@
-<modal-add>
-    
-<form onsubmit={ submit } name="form_add"> 
-    <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
-                            class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                    <h4 class="modal-title custom_align" id="Heading">Edit Your Detail </h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input class="form-control " type="text" name="_id" id="_id" placeholder="_id">
+<modal-add>   
+    <form onsubmit={ submit } name="form_add"> 
+        <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
+                                class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        <h4 class="modal-title custom_align" id="Heading">Add New Client </h4>
                     </div>
-                    <div class="form-group">
-                        <input class="form-control " type="text" name="first_name" id="first_name"
-                            placeholder="first_name">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input class="form-control " type="text" name="first_name" id="first_name" value="{state.first_name}" placeholder="first name">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control " type="text" name="last_name" id="last_name" value="{state.last_name}" placeholder="Last name">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control " type="text" name="email" id="email" value="{state.email}" placeholder="E-mail">
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="2" class="form-control" name="address" id="address" value="{state.address}" placeholder="Address"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control " type="text" name="contact" id="contact" value="{state.contact}" placeholder="contact">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input class="form-control " type="text" name="last_name" id="last_name"
-                            placeholder="first_name">
-                    </div>
-                    <div class="form-group">
-                        <textarea rows="2" class="form-control" name="address" id="address"
-                            placeholder="Address"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control " type="text" name="email" id="email" placeholder="first_name">
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control " type="text" name="contact" id="contact" placeholder="first_name">
+                    <div class="modal-footer ">
+                        <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;"><span
+                                class="glyphicon glyphicon-ok-sign"></span> Update</button>
                     </div>
                 </div>
-                <div class="modal-footer ">
-                    <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span
-                            class="glyphicon glyphicon-ok-sign"></span> Update</button>
-                </div>
+                <!-- /.modal-content -->
             </div>
-            <!-- /.modal-content -->
+            <!-- /.modal-dialog -->
         </div>
-        <!-- /.modal-dialog -->
-    </div>
-
-                    </form>
+    </form>
     <script>
         export default {
-           
+            onBeforeMount(props,state){
+                this.state = {
+                    first_name:'12313',
+                    last_name:'',
+                    email:'asdsad',
+                    address:'',
+                    contact:''
+                }
+            },
+            onMounted(){
+                console.log("add onMounted")
+               this.resetForm()
+            },
+            resetForm(){
+                 this.update({
+                    first_name:'',
+                    last_name:'',
+                    email:'',
+                    address:'',
+                    contact:''
+                })
+            },
             submit(e){
-                console.log('save button')
                 e.preventDefault();
-                alert('save')
+                const newData = {
+                    first_name:e.target.first_name.value,
+                    last_name:e.target.last_name.value,
+                    address:e.target.address.value,
+                    email:e.target.email.value,
+                    contact:e.target.contact.value
+                };
+                this.ApiSave(newData);
+            },
+            async ApiSave(data){
+                console.log(JSON.stringify(data));
+            await fetch(`http://localhost:3333/api/clients`, {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then((res) => res.json())
+            .then((data) => {
+                if(data[0].validation === "required"){
+                    alert("Please Fill this "+data[0].field+" Field")
+                }else{
+                    $("#add").modal('hide');
+                    $("#add").on('hidden.bs.modal', function (ex) {
+                        console.log(data)
+                    })
+                }
+            })
             }
 
         }

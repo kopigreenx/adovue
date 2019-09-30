@@ -30,7 +30,7 @@
             onBeforeMount(props, state) {
                //initial state
                this.state={
-                    id_client: ''
+                    id_client: 'adas'
                }
             },
             onMounted(props, state) {
@@ -42,11 +42,26 @@
             delete_client(e) {
                 this.props.callback
                 console.log(this.state)
-                $("#delete").modal('hide');
-                $("#delete").on('hidden.bs.modal', function (ex) {
-                   
-                })
+                this.ApiDelete(this.state.id_client)
 
+            },
+            async ApiDelete(_id){
+                await fetch(`http://localhost:3333/api/clients/${_id}`, {
+                    method: 'DELETE',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    }
+                    })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log(data)
+                        $("#delete").modal('hide');
+                        $("#delete").on('hidden.bs.modal', function (ex) {
+                        
+                        })
+                        
+                    })
             }
         }
     </script>
