@@ -5,7 +5,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
                             class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                    <h4 class="modal-title custom_align" id="Heading">Edit Your Detail </h4>
+                    <h4 class="modal-title custom_align" id="Heading">Edit Client Detail </h4>
                 </div>
                 <form onsubmit={ submit } id='someForm'>
                 <div class="modal-body">
@@ -84,10 +84,7 @@
                         address:data.address,
                         contact:data.contact,
                     })
-                    console.log(this.state)
                 }
-                
-                console.log('data state ')
             },
             resetValue(){
                 document.getElementById('_id').value = "";
@@ -102,9 +99,9 @@
                     email:e.target.email.value,
                     contact:e.target.contact.value
                 };
-                this.ApiSave(_id,dataEdited);
+                this.ApiSave(_id,dataEdited,this.props);
             },
-            async ApiSave(_id,data){
+            async ApiSave(_id,data,props){
                 console.log(JSON.stringify(data));
             await fetch(`http://localhost:3333/api/clients/${_id}`, {
                 method: 'PUT',
@@ -117,7 +114,7 @@
             .then((data) => {
                 $("#edit").modal('hide');
                 $("#edit").on('hidden.bs.modal', function (ex) {
-                    console.log(data)
+                    props.callback()
                 })
                 
             })

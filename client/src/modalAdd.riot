@@ -27,7 +27,7 @@
                     </div>
                     <div class="modal-footer ">
                         <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;"><span
-                                class="glyphicon glyphicon-ok-sign"></span> Update</button>
+                                class="glyphicon glyphicon-ok-sign"></span>save</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -39,19 +39,19 @@
         export default {
             onBeforeMount(props,state){
                 this.state = {
-                    first_name:'12313',
+                    first_name:'',
                     last_name:'',
-                    email:'asdsad',
+                    email:'',
                     address:'',
                     contact:''
                 }
             },
             onMounted(){
-                console.log("add onMounted")
-               this.resetForm()
+                console.log("modalAdd onMounted")
+                this.resetForm()
             },
             resetForm(){
-                 this.update({
+                this.update({
                     first_name:'',
                     last_name:'',
                     email:'',
@@ -68,9 +68,9 @@
                     email:e.target.email.value,
                     contact:e.target.contact.value
                 };
-                this.ApiSave(newData);
+                this.ApiSave(newData,this.props);
             },
-            async ApiSave(data){
+            async ApiSave(data,props){
                 console.log(JSON.stringify(data));
             await fetch(`http://localhost:3333/api/clients`, {
                 method: 'POST',
@@ -81,12 +81,12 @@
                 body: JSON.stringify(data)
             }).then((res) => res.json())
             .then((data) => {
-                if(data[0].validation === "required"){
+                if(data[0] && data[0].validation){
                     alert("Please Fill this "+data[0].field+" Field")
                 }else{
                     $("#add").modal('hide');
                     $("#add").on('hidden.bs.modal', function (ex) {
-                        console.log(data)
+                        props.callback()
                     })
                 }
             })

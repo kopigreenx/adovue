@@ -35,31 +35,32 @@
   </table>
 
   <modal-edit></modal-edit>
-  <modal-delete></modal-delete>
+  <modal-delete state={ state.id_delete }></modal-delete>
   <modal-add></modal-add>
 
   <script>
-    import {mount,register} from 'riot'
+    import {mount,register,unregister} from 'riot'
     const axios = require('axios');
     import modalAdd from './modalAdd.riot'
     import modalEdit from './modalEdit.riot'
     import modalDelete from './modalDelete.riot'
-    register('modal-add', modalAdd)
-    register('modal-edit', modalEdit)
-    register('modal-delete', modalDelete)
-    function deleteCallback(){
-    }
 
+    function callbackActionAdd(tags){
+      unregister('modal-add', modalAdd)
+      //this.ApiRequest('')
+    }
+    function callbackActionEdit(tags){
+      unregister('modal-edit', modalEdit)
+      //this.ApiRequest('')
+    }
+    function callbackActionDelete(tags){
+      unregister('modal-delete', modalDelete)
+      //this.ApiRequest('')
+    }
     export default {
       state: {
         clients: [],
-        id_delete:'',
-        keySearch:''
-      },
-      components:{
-        modalAdd,
-        modalEdit,
-        modalDelete
+        id_delete:''
       },
       onBeforeMount(props,state) {
         this.ApiRequest('')
@@ -79,21 +80,23 @@
         this.reset()
         this.ApiRequest(input)
       },
+      actAdd(id){
+        register('modal-add', modalAdd)
+        mount('modal-add',{callback:callbackActionAdd})
+        //console.log('act delete from client-display => '+id)
+      },
       actEdit(index){
         
         const data =this.state.clients[index];
-        mount('modal-edit',{data})
+        register('modal-edit', modalEdit)
+        mount('modal-edit',{data,callback:callbackActionEdit})
       },
       actDelete(index){
-        const id_delete = this.state.clients[index]._id;
-        this.update({id_delete})
-        mount('modal-delete',{data_id:this.state.id_delete,callback:deleteCallback})
-        this.update();
+        this.state.id_delete = this.state.clients[index]._id;
+        register('modal-delete', modalDelete)
+        mount('modal-delete',{data_id:this.state.id_delete,callback:callbackActionDelete});
+        console.log(this.state.id_delete);
         
-        //console.log('act delete from client-display => '+id)
-      },
-      actAdd(id){
-        mount('modal-add')
         //console.log('act delete from client-display => '+id)
       },
       async ApiRequest(search){
@@ -105,7 +108,7 @@
             this.update({ clients })
           })
       }
-
     }
+    
 </script>
 </ClientDisplay>

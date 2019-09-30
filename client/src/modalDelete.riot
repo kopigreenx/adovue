@@ -5,12 +5,12 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
                             class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                    <h4 class="modal-title" id="Heading">{id_client}Delete Confirmation </h4>
+                    <h4 class="modal-title" id="Heading">Delete Confirmation</h4>
                 </div>
                 <div class="modal-body">
 
                     <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure
-                        you want to delete this Record {state.id_client}?</div>
+                        you want to delete this Client {state.id_client ? state.id_client : 'NO DATA'}?</div>
 
                 </div>
                 <div class="modal-footer ">
@@ -30,22 +30,21 @@
             onBeforeMount(props, state) {
                //initial state
                this.state={
-                    id_client: 'adas'
+                    id_client: ''
                }
             },
             onMounted(props, state) {
                 
                 console.log('on Mounted modal delete '+props.data_id)
-                this.update({ id_client: props.data_id })
+                this.state.id_client = props.data_id;
+                this.update();
                 
             },
             delete_client(e) {
-                this.props.callback
-                console.log(this.state)
-                this.ApiDelete(this.state.id_client)
-
+                console.log(this.props)
+                this.ApiDelete(this.state.id_client,this.props)
             },
-            async ApiDelete(_id){
+            async ApiDelete(_id,props){
                 await fetch(`http://localhost:3333/api/clients/${_id}`, {
                     method: 'DELETE',
                     headers: {
@@ -58,7 +57,7 @@
                         console.log(data)
                         $("#delete").modal('hide');
                         $("#delete").on('hidden.bs.modal', function (ex) {
-                        
+                            props.callback(this)
                         })
                         
                     })
