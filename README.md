@@ -26,7 +26,7 @@ $ npm start
 ```
 
 ### Server Installation
-Install the dependencies and devDependencies and start the Client.
+Install the dependencies and devDependencies and start the Server.
 
 ```sh
 $ cd server
