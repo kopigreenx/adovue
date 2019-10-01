@@ -1,4 +1,4 @@
-<ClientDisplay callbackData={ApiRequest('')}>
+<ClientDisplay>
     <div class="row">
       <div class="col-lg-8">
         <div class="input-group mb-3">
@@ -33,10 +33,9 @@
       </tr>
       </tbody>
   </table>
-
-  <modal-add ></modal-add>
-  <modal-edit client_edit={ state.clientEdit } ></modal-edit>
-  <modal-delete idClient={ id_delete } ></modal-delete>
+  <modal-add passProps={this.ApiRequest} ></modal-add>
+  <modal-edit client_edit={ state.clientEdit } passProps={this.ApiRequest} ></modal-edit>
+  <modal-delete idClient={ id_delete } passProps={this.ApiRequest} ></modal-delete>
 
   <script>
     import {mount,register,components} from 'riot'
@@ -78,12 +77,12 @@
       actEdit(index){
         this.state.clientEdit = this.state.clients[index];
         this.update()
-        mount('modal-edit');
+        mount('modal-edit',{callback:this.ApiRequest('')});
       },
       actDelete(index){
         this.id_delete = this.state.clients[index]._id;
         this.update()
-        mount('modal-delete');
+        mount('modal-delete',{callback:this.ApiRequest('')});
       },
       async ApiRequest(search){
         await fetch(`http://localhost:3333/api/clients/${search}`)

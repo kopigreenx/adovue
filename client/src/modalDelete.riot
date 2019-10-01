@@ -42,7 +42,7 @@
                         if(data && data.delete_status=="success"){
                             $("#delete").modal('hide');
                             $("#delete").on('hidden.bs.modal', function (ex) {
-                                this.parentNode.attributes[0];
+                                props.passProps('')
                             });
                         }else{
                             alert('Data Not Found')
