@@ -39,7 +39,6 @@
                     })
                     .then((res) => res.json())
                     .then((data) => {
-                        console.log(data)
                         if(data && data.delete_status=="success"){
                             $("#delete").modal('hide');
                             $("#delete").on('hidden.bs.modal', function (ex) {
