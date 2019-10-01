@@ -12,8 +12,6 @@ Dillinger uses a number of open source projects to work properly:
 * [Twitter Bootstrap] - great UI boilerplate for modern web apps
 * [jQuery] - for bootstrap function
 * [webpack] -Its main purpose is to bundle JavaScript files for usage in a browser
-And of course Dillinger itself is open source with a [public repository](https://github.com/kopigreenx/adovue)
- on GitHub.
 
 ### Client Installation
 Install the dependencies and devDependencies and start the Client.
