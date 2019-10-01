@@ -1,4 +1,4 @@
-# FULL STACK AdonisJS + RiotJS
+# FULL STACK AdonisJS with mongoDB database + RiotJS 
 # Features!
 
   - Add ,Edit Delete & Search Client
