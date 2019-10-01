@@ -2,7 +2,7 @@
 node_modules
 
 # Adonis directory for storing tmp files
-dist
+dist/
 
 # Environment variables, never commit this file
 .env
