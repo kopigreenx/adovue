@@ -5,47 +5,31 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
                             class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                    <h4 class="modal-title" id="Heading">{id_client}Delete Confirmation </h4>
+                    <h4 class="modal-title" id="Heading">Delete Confirmation</h4>
                 </div>
                 <div class="modal-body">
 
-                    <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure
-                        you want to delete this Record {state.id_client}?</div>
+                    <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure delete this Client?  <strong> {props.idClient ? props.idClient : 'NO DATA'}</strong></div>
 
                 </div>
                 <div class="modal-footer ">
-                    <button type="button" onclick="{delete_client}" key="{state.id_client}" class="btn btn-success"><span
-                            class="glyphicon glyphicon-ok-sign"></span> Yes</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
-                            class="glyphicon glyphicon-remove"></span> No</button>
+                    <button type="button" onclick="{delete_client}" key="{ props.idClient }" class="btn btn-danger"> Yes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"> No</button>
                 </div>
             </div>
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
     </div>
+    
 
     <script>
         export default {
-            onBeforeMount(props, state) {
-               //initial state
-               this.state={
-                    id_client: 'adas'
-               }
-            },
-            onMounted(props, state) {
-                
-                console.log('on Mounted modal delete '+props.data_id)
-                this.update({ id_client: props.data_id })
-                
-            },
             delete_client(e) {
-                this.props.callback
-                console.log(this.state)
-                this.ApiDelete(this.state.id_client)
-
+                console.log(this.props.idClient)
+                this.ApiDelete(this.props.idClient,this.props)
             },
-            async ApiDelete(_id){
+            async ApiDelete(_id,props){
                 await fetch(`http://localhost:3333/api/clients/${_id}`, {
                     method: 'DELETE',
                     headers: {
@@ -55,11 +39,15 @@
                     })
                     .then((res) => res.json())
                     .then((data) => {
-                        console.log(data)
-                        $("#delete").modal('hide');
-                        $("#delete").on('hidden.bs.modal', function (ex) {
+                        if(data && data.delete_status=="success"){
+                            $("#delete").modal('hide');
+                            $("#delete").on('hidden.bs.modal', function (ex) {
+                                props.passProps('')
+                            });
+                        }else{
+                            alert('Data Not Found')
+                        }
                         
-                        })
                         
                     })
             }
