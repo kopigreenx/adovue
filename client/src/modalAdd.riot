@@ -9,25 +9,39 @@
                         <h4 class="modal-title custom_align" id="Heading">Add New Client </h4>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <input class="form-control " type="text" name="first_name" id="first_name" value="{state.first_name}" placeholder="first name">
+                        <div class="form-group row">
+                            <label for="first_name" class="col-sm-3 col-form-label">First Name</label>
+                            <div class="col-sm-9">
+                                <input class="form-control " type="text" name="first_name" id="first_name" placeholder="first name">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input class="form-control " type="text" name="last_name" id="last_name" value="{state.last_name}" placeholder="Last name">
+                        <div class="form-group row">
+                            <label for="last_name" class="col-sm-3 col-form-label">Last Name</label>
+                            <div class="col-sm-9">
+                                <input class="form-control " type="text" name="last_name" id="last_name" placeholder="Last name">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input class="form-control " type="text" name="email" id="email" value="{state.email}" placeholder="E-mail">
+                        <div class="form-group row">
+                            <label for="email" class="col-sm-3 col-form-label">E-mail</label>
+                            <div class="col-sm-9">
+                                <input class="form-control " type="text" name="email" id="email" placeholder="E-mail">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <textarea rows="2" class="form-control" name="address" id="address" value="{state.address}" placeholder="Address"></textarea>
+                        <div class="form-group row">
+                            <label for="address" class="col-sm-3 col-form-label">Address</label>
+                            <div class="col-sm-9">
+                                <textarea rows="2" class="form-control" name="address" id="address" placeholder="Address"></textarea>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input class="form-control " type="text" name="contact" id="contact" value="{state.contact}" placeholder="contact">
+                        <div class="form-group row">
+                            <label for="contact" class="col-sm-3 col-form-label">Contact</label>
+                            <div class="col-sm-9">
+                                <input class="form-control " type="text" name="contact" id="contact" placeholder="contact">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer ">
-                        <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;"><span
-                                class="glyphicon glyphicon-ok-sign"></span>save</button>
+                        <button type="submit" class="btn btn-success btn-lg" style="width: 100%;"> save</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -36,29 +50,8 @@
         </div>
     </form>
     <script>
+        
         export default {
-            onBeforeMount(props,state){
-                this.state = {
-                    first_name:'',
-                    last_name:'',
-                    email:'',
-                    address:'',
-                    contact:''
-                }
-            },
-            onMounted(){
-                console.log("modalAdd onMounted")
-                this.resetForm()
-            },
-            resetForm(){
-                this.update({
-                    first_name:'',
-                    last_name:'',
-                    email:'',
-                    address:'',
-                    contact:''
-                })
-            },
             submit(e){
                 e.preventDefault();
                 const newData = {
@@ -71,25 +64,25 @@
                 this.ApiSave(newData,this.props);
             },
             async ApiSave(data,props){
-                console.log(JSON.stringify(data));
-            await fetch(`http://localhost:3333/api/clients`, {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }).then((res) => res.json())
-            .then((data) => {
-                if(data[0] && data[0].validation){
-                    alert("Please Fill this "+data[0].field+" Field")
-                }else{
-                    $("#add").modal('hide');
-                    $("#add").on('hidden.bs.modal', function (ex) {
-                        props.callback()
-                    })
-                }
-            })
+                await fetch(`http://localhost:3333/api/clients`, {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    if(data[0] && data[0].validation){
+                        alert("Please Fill this "+data[0].field+" Field")
+                    }else{
+                        $("#add").modal('hide');
+                        $("#add").on('hidden.bs.modal', function (ex) {
+                            this.parentNode.attributes[0];
+                        })
+                    }
+                })
             }
 
         }

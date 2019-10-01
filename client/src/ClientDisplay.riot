@@ -1,4 +1,4 @@
-<ClientDisplay>
+<ClientDisplay callbackData={ApiRequest('')}>
     <div class="row">
       <div class="col-lg-8">
         <div class="input-group mb-3">
@@ -6,7 +6,7 @@
         </div>
       </div>
       <div class="col-lg-4">
-        <button class="btn btn-success btn-xs" style="margin-bottom:10px" onclick="{actAdd}"  data-title="Add" data-toggle="modal" data-target="#add" ><span class="glyphicon glyphicon-ice-lolly" aria-hidden="true"></span>Add</button>
+        <button class="btn btn-success btn-xs" style="margin-bottom:10px" onclick="{() => actAdd()}"  data-title="Add" data-toggle="modal" data-target="#add" ><span class="glyphicon glyphicon-ice-lolly" aria-hidden="true"></span>Add</button>
       </div>
     </div>
   
@@ -28,82 +28,67 @@
         <th scope="row">{client.email}</th>
         <th scope="row">{client.address}</th>
         <th scope="row">{client.contact}</th>
-        <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" onclick="{() => actEdit(index)}" data-id="{client._id}" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span>Edit</button></p></td>
-        <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" onclick="{() => actDelete(index)}" data-id="{client._id}" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-ice-lolly" aria-hidden="true"></span>Delete</button></p></td>
+        <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" onclick="{() => actEdit(index)}" data-id="{client._id}" data-title="Edit" data-toggle="modal" data-target="#edit" > Edit</button></p></td>
+        <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" onclick="{() => actDelete(index)}" data-id="{client._id}" data-title="Delete" data-toggle="modal" data-target="#delete" > Delete</button></p></td>
       </tr>
       </tbody>
   </table>
 
-  <modal-edit></modal-edit>
-  <modal-delete state={ state.id_delete }></modal-delete>
-  <modal-add></modal-add>
+  <modal-add ></modal-add>
+  <modal-edit client_edit={ state.clientEdit } ></modal-edit>
+  <modal-delete idClient={ id_delete } ></modal-delete>
 
   <script>
-    import {mount,register,unregister} from 'riot'
-    const axios = require('axios');
+    import {mount,register,components} from 'riot'
     import modalAdd from './modalAdd.riot'
     import modalEdit from './modalEdit.riot'
     import modalDelete from './modalDelete.riot'
 
-    function callbackActionAdd(tags){
-      unregister('modal-add', modalAdd)
-      //this.ApiRequest('')
-    }
-    function callbackActionEdit(tags){
-      unregister('modal-edit', modalEdit)
-      //this.ApiRequest('')
-    }
-    function callbackActionDelete(tags){
-      unregister('modal-delete', modalDelete)
-      //this.ApiRequest('')
-    }
+    register('modal-add',modalAdd);
+    register('modal-edit',modalEdit);
+    register('modal-delete',modalDelete);
+
     export default {
+      components:{
+        modalAdd,
+        modalEdit,
+        modalDelete
+      },
       state: {
         clients: [],
-        id_delete:''
+        clientEdit:[]
       },
       onBeforeMount(props,state) {
         this.ApiRequest('')
       },
-      onMounted(props,state){
-        
-      },
       reset(){
         this.update({
-        clients: [],
-        id_delete:''
-      })
+          clients: [],
+          clientEdit: []
+        })
       },
       search(e){
         const input = e.target.value;
-        console.log('search '+input)
         this.reset()
         this.ApiRequest(input)
       },
       actAdd(id){
-        register('modal-add', modalAdd)
-        mount('modal-add',{callback:callbackActionAdd})
-        //console.log('act delete from client-display => '+id)
+        mount('modal-add');
       },
       actEdit(index){
-        
-        const data =this.state.clients[index];
-        register('modal-edit', modalEdit)
-        mount('modal-edit',{data,callback:callbackActionEdit})
+        this.state.clientEdit = this.state.clients[index];
+        this.update()
+        mount('modal-edit');
       },
       actDelete(index){
-        this.state.id_delete = this.state.clients[index]._id;
-        register('modal-delete', modalDelete)
-        mount('modal-delete',{data_id:this.state.id_delete,callback:callbackActionDelete});
-        console.log(this.state.id_delete);
-        
-        //console.log('act delete from client-display => '+id)
+        this.id_delete = this.state.clients[index]._id;
+        this.update()
+        mount('modal-delete');
       },
       async ApiRequest(search){
         await fetch(`http://localhost:3333/api/clients/${search}`)
           .then((res) => res.json())
           .then((data) => {
-            console.log(data)
             const clients = data;
             this.update({ clients })
           })

@@ -8,34 +8,47 @@
                     <h4 class="modal-title custom_align" id="Heading">Edit Client Detail </h4>
                 </div>
                 <form onsubmit={ submit } id='someForm'>
-                <div class="modal-body">
-                 
-                    <div class="form-group">
-                        <input class="form-control " type="text" id="_id" name="_id" value="{state._id}" id="_id" placeholder="_id">
+                <div class="modal-body" >
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-3 col-form-label">Client ID</label>
+                        <div class="col-sm-9">
+                            <input class="form-control " type="text" id="_id" name="_id" value="{props.client_edit ? props.client_edit._id : ''}" id="_id" placeholder="_id" readonly>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input class="form-control " type="text" name="first_name" value="{state.first_name}" id="firstname"
-                            placeholder="first name">
+                    <div class="form-group row">
+                        <label for="_id" class="col-sm-3 col-form-label">First Name</label>
+                        <div class="col-sm-9">
+                            <input class="form-control " type="text" name="first_name" value="{props.client_edit ? props.client_edit.first_name : ''}" id="firstname" placeholder="first name">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input class="form-control " type="text" name="last_name" value="{state.last_name}" id="last_name"
-                            placeholder="last name">
+                    <div class="form-group row">
+                        <label for="first_name" class="col-sm-3 col-form-label">Last Name</label>
+                        <div class="col-sm-9">
+                            <input class="form-control " type="text" name="last_name" value="{props.client_edit ? props.client_edit.last_name : ''}" id="last_name" placeholder="last name">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input class="form-control " type="text" name="email" value="{state.email}" id="email" placeholder="first_name">
+                    <div class="form-group row">
+                        <label for="last_name" class="col-sm-3 col-form-label">E-mail</label>
+                        <div class="col-sm-9">
+                            <input class="form-control " type="text" name="email" value="{props.client_edit ? props.client_edit.email : ''}" id="email" placeholder="email">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <textarea rows="2" class="form-control" name="address" value="{state.address}" id="address"
-                            placeholder="Address"></textarea>
+                    <div class="form-group row">
+                        <label for="address" class="col-sm-3 col-form-label">Address</label>
+                        <div class="col-sm-9">
+                            <textarea rows="2" class="form-control" name="address" value="{props.client_edit ? props.client_edit.address : ''}" id="address" placeholder="Address"></textarea>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input class="form-control " type="text" name="contact" value="{state.contact}" id="contact" placeholder="first_name">
+                    <div class="form-group row">
+                        <label for="contact" class="col-sm-3 col-form-label">Contact</label>
+                        <div class="col-sm-9">
+                            <input class="form-control " type="text" name="contact" value="{props.client_edit ? props.client_edit.contact : ''}" id="contact" placeholder="contact">
+                        </div>
                     </div>
 
                 </div>
                 <div class="modal-footer ">
-                    <button type="submit" class="btn btn-warning btn-lg" style="width: 100%;"><span
-                            class="glyphicon glyphicon-ok-sign"></span> Update</button>
+                    <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;"> Update</button>
                 </div>
                 
             </form>
@@ -47,77 +60,35 @@
 
     <script >
         export default {
-            
-            onBeforeMount(props, state) {
-               this.state = {
-                    _id:'',
-                    first_name:'',
-                    last_name:'',
-                    email:'',
-                    address:'',
-                    contact:''
-                }
-            },
-            onMounted(props,state){
-                //di console muncul data saat di tampilkan tidak muncul data apapun
-                
-                if(props.data==null){
-                    //first load component
-                    console.log('data null')
-                    this.update({
-                        _id:'data._id',
-                        first_name:'data.first_name',
-                        last_name:'data.last_name',
-                        email:'data.email',
-                        address:'data.address',
-                        contact:'data.contact',
-                    })
-                }else{
-                    //second load with data
-                    console.log('data not null')
-                    const {data} = props;
-                    this.update({
-                        _id:data._id,
-                        first_name:data.first_name,
-                        last_name:data.last_name,
-                        email:data.email,
-                        address:data.address,
-                        contact:data.contact,
-                    })
-                }
-            },
-            resetValue(){
-                document.getElementById('_id').value = "";
-            },
             submit(e){
                 e.preventDefault();
                 const _id = e.target._id.value;
-                const dataEdited = {
+                const client_edited = {
                     first_name:e.target.first_name.value,
                     last_name:e.target.last_name.value,
                     address:e.target.address.value,
                     email:e.target.email.value,
                     contact:e.target.contact.value
                 };
-                this.ApiSave(_id,dataEdited,this.props);
+                this.ApiSave(_id,client_edited,this.props);
             },
             async ApiSave(_id,data,props){
-                console.log(JSON.stringify(data));
-            await fetch(`http://localhost:3333/api/clients/${_id}`, {
-                method: 'PUT',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            }).then((res) => res.json())
-            .then((data) => {
-                $("#edit").modal('hide');
-                $("#edit").on('hidden.bs.modal', function (ex) {
-                    props.callback()
+                await fetch(`http://localhost:3333/api/clients/${_id}`, {
+                    method: 'PUT',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
                 })
-                
-            })
+                .then((res) => res.json())
+                .then((data) => {
+                    $("#edit").modal('hide');
+                    $("#edit").on('hidden.bs.modal', function (ex) {
+                        this.parentNode.attributes[0];
+                    })
+                    
+                })
             }
 
         }
